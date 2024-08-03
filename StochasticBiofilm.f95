@@ -1,7 +1,7 @@
 ! A fortran95 program for G95
 !Mathematical Model of Biofilms
 !Part of Doctoral Thesis for Curtin University and University of Aberdeen, completed in February 2021.
-! Created by Dr Paulina A Dzianach under supervision and invaluable guidance of Dr Francisco Perez-Reche, Prof. Gary A Dykes, Prof. Kenneth Forbes and Prof. Norval Strachan.
+! Created by Dr Paulina A Dzianach under supervision and guidance of Dr Francisco Perez-Reche, Prof. Gary A Dykes, Prof. Kenneth Forbes and Prof. Norval Strachan.
 
 !Parameters Legend
 !*inistate* : Initial inoculum. Can take values of "single cell" or "inoculation". "single cell" starts the simulation with one cell attached at the centre of the surface. "inoulation" starts the simulation with a given number of live cells spread randomly across the surface, the number specified by the value of inicellcount
