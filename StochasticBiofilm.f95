@@ -3,6 +3,8 @@
 !Part of Doctoral Thesis for Curtin University and University of Aberdeen, completed in February 2021.
 ! Created by Dr Paulina A Dzianach under supervision and guidance of Dr Francisco Perez-Reche, Prof. Gary A Dykes, Prof. Kenneth Forbes and Prof. Norval Strachan.
 
+!**** To run, set parameters and output file names
+
 !Parameters Legend
 !*inistate* : Initial inoculum. Can take values of "single cell" or "inoculation". "single cell" starts the simulation with one cell attached at the centre of the surface. "inoulation" starts the simulation with a given number of live cells spread randomly across the surface, the number specified by the value of inicellcount
 !*L, H*: length and width of the system in terms of number of sites
@@ -44,6 +46,7 @@ program main
     real, parameter :: UmaxO=4.5E-3, UmaxC=4.5E-2					      	
     real, parameter :: EPS_max=0.0 	
     real,parameter :: bonus=0.5!bonus to growth rate from ECM uptake (rE)
+
 !-----VARIABLES-------------------------
     integer :: i, ycor,xcor,counter, dir,dir1,tstep,rls,k,fno, j	!Iterators/coordinates
     integer :: Ncj_att,Ncj						!Cell numbers storage
@@ -79,6 +82,14 @@ program main
     integer, dimension(max_rls, L*H)   :: rls_invaded                   !All rls - This saves all locations which were ever invaded by bacteria
     real, dimension(max_rls,L*H) ::rls_biopic     !All rls - biofilm at the end of the rls, and compound concentrations
     character(len=3), dimension(max_rls,maxstep):: rls_events !mean_uptk is the mean uptake between all live cells. i uptk is the uptake at location where an event took place
+	integer fno1,fno2
+	
+!**** Output file names
+	fno1=1
+    open(fno1,file='fbiopic_v3_1_s1_c_6_5_Aero_tmax_12_rls_100_diff_E11_rE_0_5_betty_1000_Kg_6_5.csv')
+	fno2=2
+	open(fno2,file='data_v3_1_s1_c_6_5_Aero_tmax_12_rls_100_diff_E11_rE_0_5_betty_1000_Kg_6_5.csv')
+
 
 ! subroutine EPS generation is outdated and would need to be updated before use. I've introduced a safety net - if it happens that by mistake EPS rate has been changed to non zero, the code will spit out an error
     if (EPS_max>0)then
@@ -236,7 +247,6 @@ program main
 !                                   DATA STORAGE(RESULTS COLLECTION)
 !__________________________________________________________________________________________________
      write(*,*) "collecting data..."
-        fno=1
    !     open(fno,file='time_surf_dev_0_3_c_0_3_o_0_3.dat')
     !        do rls=1,max_rls
      !           do tstep=1,finalstep(rls)
@@ -261,24 +271,23 @@ program main
 
 
         !end if_
-       open(fno,file='fbiopic_v3_1_s1_c_6_5_Aero_tmax_12_rls_100_diff_E11_rE_0_5_betty_1000_Kg_6_5.csv')
  	    do rls=1,max_rls
 		do i=1,L*H           
-                    write(fno,*) rls_biopic(rls,i), rls
+                    write(fno1,*) rls_biopic(rls,i), rls
 		end do
             end do
-        close(fno)
-        fno=fno+1
-        if(fno==6)then
-       		fno=fno+1
+        close(fno1)
+        fno1=fno1+1
+        if(fno1==6)then
+       		fno1=fno1+1
         end if
 
 
 
-        open(fno,file='data_v3_1_s1_c_6_5_Aero_tmax_12_rls_100_diff_E11_rE_0_5_betty_1000_Kg_6_5.csv')
+
             do rls=1,max_rls
                 do tstep=1,finalstep(rls)
-                    write(fno,*) rls_bcellcount(rls,tstep),',', rls,',', rls_eps(rls,tstep),',',&
+                    write(fno2,*) rls_bcellcount(rls,tstep),',', rls,',', rls_eps(rls,tstep),',',&
                                 &rls_events(rls,tstep),',', rls_ev_loc(rls,tstep),',',rls_t(rls,tstep),',',&
                                 &mean_uptk_c(rls,tstep),',', mean_uptk_o(rls,tstep),',',&
                                 &i_uptk_c(rls,tstep),',',i_uptk_o(rls,tstep),',',&
@@ -290,10 +299,10 @@ program main
                                 &mean_starvation(rls,tstep),',',waiting_t(rls,tstep)
                 end do
             end do
-        close(fno)
-        fno=fno+1
-        if(fno==6)then
-        	fno=fno+1
+        close(fno2)
+        fno2=fno2+1
+        if(fno2==6)then
+        	fno2=fno2+1
         end if
 
 
